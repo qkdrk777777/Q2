@@ -2,7 +2,7 @@ library(DUcj)
 package(RCurl)
 package(XML)
 package(rgdal)
-
+pcakage(ineq)
 setwd('D:\\Q2')
 q<-shp_all('new')
 setwd('D:\\Q2\\new')
