@@ -1,5 +1,6 @@
 k=0
 data_ls<-list()
+
 for(l in c(2016,""))
 {setwd(paste0('C:/Users/qkdrk/Downloads/',l,'data'))
   getwd()
@@ -156,13 +157,35 @@ for(l in c(2016,""))
   data<-data[,-c(1,2)]
 
   setwd('D:\\Q2')
-  #write.csv(data,'data_raw4.csv')
+
+
+
+  #a<-as.character(data[xor(is.na(data$교원수)==T,is.na(data$학생수)==T),11])
+  #t<-NULL
+
+  #for(i in 1:length(a)){
+  #url<-'https://ko.wikipedia.org/wiki/'
+  #b<-unlist(strsplit(a,'학교')[[i]])
+  #url<-paste0(url,paste0(b[1],'학교'),"_",gsub("분교장","분교",b[2]))
+  #url<-getURL(url)
+  #line<-readHTMLTable(url,stringsAsFactors=F)
+  #if(sum(line[[2]][,1]%in%'교직원 수')==0)t[i]<-0 else t[i]<-line[[2]][line[[2]][,1]%in%'교직원 수',2]
+  #}
+  #library(stringr)
+  data[xor(is.na(data$교원수)==T,is.na(data$학생수)==T),1]<-0
+  #as.numeric(unlist(str_extract_all(gsub("\\(.+?\\)","",t),'\\d')))
 
   data$학생수<-as.character(data$학생수)
   data$학생수<-as.numeric(gsub("\\(.+?\\)","",data$학생수))
   k=k+1
   data_ls[[k]]<-data
 }
-for(i in 1:2)
+
+for(i in 1:2){
   colnames(data_ls[[i]])[8]<-'돌봄교실.운영교실수'
+  setwd('D:\\Q2')
+  if(i==1)q<-2016 else q<-2017
+  write.csv(data_ls[[i]],paste0(q,'data.csv'))}
+
+
 

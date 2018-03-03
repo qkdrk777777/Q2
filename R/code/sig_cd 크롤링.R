@@ -1,23 +1,11 @@
+
 setwd('D:\\Q2')
-#data<-read.csv('data_raw4.csv')
-head(data)
-#data<-data[,-1]
-data$학생수<-as.character(data$학생수)
-  data$학생수<-as.numeric(gsub("\\(.+?\\)","",data$학생수))
-
-  #del<-strsplit(gsub("(.+?)","",data$학생수),"[(]")
-  #for(i in 1:length(del))
-  #  if(is.na(del[[i]][1])==T)del[[i]][2]<-NA
-  #del<-matrix(as.numeric(unlist(del)),byrow=T,ncol=2)
-  #data$학생수<-del[,1]-del[,2]
-  #data$학생수<-del[,1]-del[,2]
-data$교원당_학생수<-data$학생수/data$교원수
-
+#찌끄래기2 있던 곳
 library(DUcj)
 package(RCurl)
 package(XML)
 
-q<-shp_all('D:/Q2/SIG_201703 (1)')
+q<-shp_all('D:/Q2/SIG_201703')
 from.crs = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs"
 to.crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 proj4string(q[[1]])<-CRS(from.crs)
