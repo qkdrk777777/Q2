@@ -18,18 +18,19 @@ rm(list=ls(pat='shp'))
 data_ls<-list()
 setwd('D:\\Q2')
 (list<-list.files(pattern='.csv'))
-for(i in 1:length(list))
-{assign(paste0((i+2015),'data'),read.csv(list[i],stringsAsFactors = F)[,-1])
+for(i in 1:length(list)){
+assign(paste0((i+2015),'data'),read.csv(list[i],stringsAsFactors = F)[,-1])
 data_ls[[i]]<-get(paste0((i+2015),'data'))
 assign(paste0('name',i),colnames(data_ls[[i]]))
 }
+
+
 rm(list=ls(pat='data$'))
 library(plyr)
 #일반
 intersect(name1,name2)
 setdiff(name1,name2)
 setdiff(name2,name1)
-
 dd_data<-list()
 for(i in 1:2)
 dd_data[[i]]<-ddply(data_ls[[i]],~시군구,summarise,교원당학생수=sum(학생수,na.rm=T)/sum(교원수,na.rm=T)
