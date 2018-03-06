@@ -2,7 +2,7 @@ library(DUcj)
 package(RCurl)
 package(XML)
 package(rgdal)
-pcakage(ineq)
+package(ineq)
 setwd('D:\\Q2')
 q<-shp_all('new')
 setwd('D:\\Q2\\new')
@@ -32,8 +32,16 @@ intersect(name1,name2)
 setdiff(name1,name2)
 setdiff(name2,name1)
 dd_data<-list()
+
+
 for(i in 1:2)
-dd_data[[i]]<-ddply(data_ls[[i]],~시군구,summarise,교원당학생수=sum(학생수,na.rm=T)/sum(교원수,na.rm=T)
+{del<-data_ls[[2]]$학교명!='왕배초등학교'
+del[is.na(del)]<-T
+if(sum(!del)>0){
+  del2<-ddply(data_ls[[1]][del,],~시군구,summarise,면적=mean(면적,na.rm=T))
+  data_ls[[2]][!del,]$면적<-del2[del2[,1]=='화성시',2]
+}
+  dd_data[[i]]<-ddply(data_ls[[i]],~시군구,summarise,교원당학생수=sum(학생수,na.rm=T)/sum(교원수,na.rm=T)
 ,면적=mean(`면적`,na.rm=T)
 ,`1인당_장서수`=mean(`X1인당_장서수`,na.rm=T)
 ,`1인당급식비(1식)`=mean(`X1인당.급식비.1식.`,na.rm=T)
@@ -41,8 +49,7 @@ dd_data[[i]]<-ddply(data_ls[[i]],~시군구,summarise,교원당학생수=sum(학
 ,`오후돌봄참여학생수`=mean(`초등돌봄교실.오후돌봄.참여학생수`,na.rm=T)
 ,`돌봄교실수`=mean(`돌봄교실.운영교실수`,na.rm=T)
 ,`저녁돌봄참여학생수`=mean(`초등돌봄교실.저녁돌봄.참여학생수`,na.rm=T)
-)
-
+)}
 for(i in 1:2)print(setequal(unique(q[[i]]@data$del9),unique(data_ls[[i]]$시군구)))
 
 for(i in 1:2){
