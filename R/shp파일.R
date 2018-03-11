@@ -1,20 +1,24 @@
 
 library(DUcj)
+package(maptools)
 package(RCurl)
 package(XML)
 package(rgdal)
 shp_ls<-c('SIG_201602','SIG_201703')
+
 for(k in 1:2){
   q<-shp_all(paste0('D:/Q2/',shp_ls[k]))
-  from.crs = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs"
+  from.crs =  "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs"
   to.crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
   proj4string(q[[1]])<-CRS(from.crs)
   q[[1]]<-spTransform(q[[1]],CRS(to.crs))
 
+  writePolyShape(q[[1]],'D:/Q2/q.shp')
+  q<-shp_all('D:/Q2/')
   a1<-'http://www.juso.go.kr/info/RoadNameDataList.do?type=search&roadCd='
   a2<-'&keyword=&city1=&county1=&town1=&searchType=0&extend=true'
 
-  del<-as.numeric(as.character(q[[1]]@data[,1]))
+  del<-as.numeric(as.character(q[[1]]@data[,2]))
   del4<-NULL
   for(i in 1:length(del)){
     url<-paste0(a1,del[i],a2)
@@ -42,8 +46,9 @@ for(k in 1:2){
   del7[is.na(del7[,3]),3]<-''
 
   del7[(regexpr('도$',del7[,1])!=-1)&(regexpr('고성군$',del7[,2])==-1),1]<-''
-  del7
+
   colnames(del7)<-NULL
+
   del9<-paste0(del7[,1],del7[,2],del7[,3])
   del9[(regexpr('시',del9)!=-1)&(regexpr('구$',del9)!=-1)]<-gsub("시","시 ",del9[(regexpr('시',del9)!=-1)&(regexpr('구$',del9)!=-1)])
   del9[(regexpr('시',del9)!=-1)&(regexpr('군$',del9)!=-1)]<-gsub("시","시 ",del9[(regexpr('시',del9)!=-1)&(regexpr('군$',del9)!=-1)])
@@ -56,6 +61,7 @@ for(k in 1:2){
   #q[[1]]@data<-merge(q[[1]]@data,data,by.x='del9',by.y='시군구',all=T)
   #setwd(paste0('D:/Q2/',shp_ls[k],'_new'))
   setwd(paste0('D:/Q2/new'))
-  write.csv(q[[1]]@data[,c(1,3)],paste0('out',k,'.csv'))
+  write.csv(q[[1]]@data[,c(2,4)],paste0('out',k,'.csv'))
   writeSpatialShape(q[[1]],paste0('out',k,'.shp'))
 }
+
