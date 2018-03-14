@@ -40,7 +40,8 @@ for(i in 1:2){
 png(filename=paste0(i+2015,colnames(q[[i]]@data[j]),'.png'),bg='transparent',width=1180,height=436)
 p(q[[i]],q[[i]]@data,j,rev=rev)
 dev.off()}}
-
+install.pack
+library(devtoo)
 for(i in 1:2){
   q[[i]]@data<-q[[i]]@data[,1:4]
   q[[i]]@data<-merge(q[[i]]@data,dd_data1[[i]],by.x='del9',by.y='시군구',all=T)
